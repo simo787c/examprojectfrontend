@@ -2,10 +2,8 @@
 
 const ROUTER_LOGIN_UI = '#card-login'
 const ROUTER_LOGOUT_UI = '#card-logout'
-const ROUTER_RESTRICTED_ANCHOR = '.restricted-anchor'
-const ROUTER_ADMIN_RESTRICTED_ANCHOR = '.admin-restricted-anchor'
-const ROUTER_USERNAME_UI = '.login-username'
-const ROUTER_DELETE_UI = '#btnDel'
+const ROUTER_RESTRICTED_ANCHOR = '#restricted-anchor'
+const ROUTER_USERNAME_UI = '#login-username'
 
 const ROUTER_SESSION_LOGIN = 'router-session-loggedin'
 const ROUTER_SESSION_USERNAME = 'router-session-username'
@@ -16,7 +14,7 @@ const ROUTER_SESSION_LAST_LOGIN = 'router-session-lastLogin'
 const ROUTER_SESSION_LAST_LOGOUT = 'router-session-lastLogout'
 
 let routes = {};
-let templates = {}; 
+let templates = {};
 
 /**
  * Removes user data from the session storeage.
@@ -46,30 +44,20 @@ function resetUserSession() {
 function toggleLoginUI(show) {
 
   let user = getUser()
-  
   if (show) {
     $(ROUTER_LOGIN_UI).show();
     $(ROUTER_LOGOUT_UI).hide();
-    $(ROUTER_RESTRICTED_ANCHOR).hide();
     $(ROUTER_RESTRICTED_ANCHOR).addClass('disabled');
-    $(ROUTER_ADMIN_RESTRICTED_ANCHOR).hide();
-    $(ROUTER_ADMIN_RESTRICTED_ANCHOR).addClass('disabled');
-    //$(ROUTER_RESTRICTED_ANCHOR).addClass('visually-hidden');
-    //$(ROUTER_RESTRICTED_ANCHOR).addClass('bg-danger');
-    //$(ROUTER_RESTRICTED_ANCHOR).removeClass('bg-success');
+    $(ROUTER_RESTRICTED_ANCHOR).addClass('btn-danger');
+    $(ROUTER_RESTRICTED_ANCHOR).removeClass('btn-success');
+
   } else {
     $(ROUTER_LOGIN_UI).hide();
     $(ROUTER_USERNAME_UI).html(`${user? user.username : '???'}`).show();
     $(ROUTER_LOGOUT_UI).show();
-    $(ROUTER_RESTRICTED_ANCHOR).show();
     $(ROUTER_RESTRICTED_ANCHOR).removeClass('disabled');
-    if (user.roles == "Admin" || user.roles == "Developer") {
-      $(ROUTER_ADMIN_RESTRICTED_ANCHOR).show();
-      $(ROUTER_ADMIN_RESTRICTED_ANCHOR).removeClass('disabled');
-    }
-    //$(ROUTER_RESTRICTED_ANCHOR).removeClass('visually-hidden');
-    //$(ROUTER_RESTRICTED_ANCHOR).addClass('bg-success');
-    //$(ROUTER_RESTRICTED_ANCHOR).removeClass('bg-danger');
+    $(ROUTER_RESTRICTED_ANCHOR).addClass('btn-success');
+    $(ROUTER_RESTRICTED_ANCHOR).removeClass('btn-danger');
   }
 }
 /**
@@ -151,13 +139,3 @@ function router(evt) {
  */
 window.addEventListener('load', router);
 window.addEventListener('hashchange', router);
-
-/**
- * Form submit action
- */
-document.forms['form-login'].onsubmit = (event) => {
-  // Avoid any default submit behavior, we want full control.
-  event.preventDefault();
-  // Go to login route.
-  window.location.href = '#/login'
-}
