@@ -11,6 +11,7 @@ var htmlTemplateCache = new Map()
 const ROUTE_TEMPLATE_KEY_HOME = 'home'
 const ROUTE_TEMPLATE_KEY_ORDER = 'order'
 const ROUTE_TEMPLATE_KEY_PRODUCT = 'product'
+const ROUTE_TEMPLATE_KEY_DELIVERY = 'delivery'
 
 /**
  * Route constants.
@@ -18,6 +19,7 @@ const ROUTE_TEMPLATE_KEY_PRODUCT = 'product'
 const ROUTE_HOME = '/'
 const ROUTE_ORDER = '/order'
 const ROUTE_PRODUCT = '/product'
+const ROUTE_DELIVERY = '/delivery'
 
 /**
  * Defines the routing templates used.
@@ -25,6 +27,7 @@ const ROUTE_PRODUCT = '/product'
 template(ROUTE_TEMPLATE_KEY_HOME, home)
 template(ROUTE_TEMPLATE_KEY_ORDER, order)
 template(ROUTE_TEMPLATE_KEY_PRODUCT, product)
+template(ROUTE_TEMPLATE_KEY_DELIVERY, delivery)
 
 /**
  * Defines the #/... url routes and the templates they match..
@@ -32,6 +35,7 @@ template(ROUTE_TEMPLATE_KEY_PRODUCT, product)
 route(ROUTE_HOME, ROUTE_TEMPLATE_KEY_HOME);
 route(ROUTE_ORDER, ROUTE_TEMPLATE_KEY_ORDER);
 route(ROUTE_PRODUCT, ROUTE_TEMPLATE_KEY_PRODUCT);
+route(ROUTE_DELIVERY, ROUTE_TEMPLATE_KEY_DELIVERY);
 /**
  * Clones an embedded HTML template, from the HTML file, via an id.
  */
@@ -69,4 +73,9 @@ function order() {
 function product() {
     $('#view').html(cloneHtmlTemplate('template-product'));
     productRenderer.updateUI("");
+};
+
+function delivery() {
+    $('#view').html(cloneHtmlTemplate('template-deliveries'));
+    vanRenderer.updateUI("");
 };

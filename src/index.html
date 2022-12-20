@@ -20,10 +20,10 @@
     <script src="./static/js/router.js" defer></script>
     <script src="./static/js/app.js" defer></script>
     <script src="./static/js/util-fetch.js" defer></script>
-    <script src="./static/js/includeshtml.js"></script>
 
     <script src="./static/js/product.js" defer></script>
     <script src="./static/js/delivery.js" defer></script>
+    <script src="./static/js/van.js" defer></script>
 </head>
 <body class="d-flex flex-column h-100 text-bg-dark">
     
@@ -47,16 +47,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#/order">Ordrer</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Dropdown link
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#/delivery">Leveringer</a>
                         </li>
                     </ul>
                 </div>
@@ -64,11 +56,11 @@
         </nav>
     </header>
 
-<!-- Begin page content -->
-<main class="flex-shrink-0">
-        <!-- Div for htmlTemplate clone injection -->
-        <div id="view" class="container"></div>
-</main>
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+            <!-- Div for htmlTemplate clone injection -->
+            <div id="view" class="container"></div>
+    </main>
 
    <!-- Templates -->
 
@@ -82,6 +74,43 @@
             </div>
         </div>
         <!-- End demo content -->
+    </template>
+
+    <!-- Delivery page -->
+
+    <template id="template-deliveries">
+        <div class="page-content" id="content">
+            <h2 class="text-center">Leverings Oversigt</h2>
+    
+    <div class="">
+        <input type="text" placeholder="Søg.." id="searchBar"></input>
+            <button type="submit" id="searchButton"
+                onclick="vanRenderer.updateUI(document.getElementById('searchBar').value)"><i
+                    class="bi bi-search"></i></button>
+    </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-secondary">
+                    <thead>
+                        <tr>
+                            <th>Leveringsdato</th>
+                            <th>Varehus</th>
+                            <th>Destination</th>
+                            <th>ProductOrdrer</th>
+                            <th>Totalvægt(g)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="delivery-table"></tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-table-delivery">
+        <td class="deliveryDate"></td>
+        <td class="fromWarehouse"></td>
+        <td class="destination"></td>
+        <td class="productOrders"></td>
+        <td class="totalWeight"></td>
     </template>
 
     <!-- Order page -->
@@ -98,10 +127,15 @@
                   <form class="card p-2">
                      <ul class="list-group mb-3 cart-list">
                     
-                        <li class="list-group-item d-flex justify-content-between total">
-                         <span>Total (USD)</span>
-                         <strong>$20</strong>
+                        <li class="list-group-item d-flex justify-content-between">
+                         <span>Total (DKK)</span>
+                         <strong id="totalPrice">0</strong>
                         </li>
+
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Samlet (g)</span>
+                            <strong id="totalWeight">0</strong>
+                           </li>
 
                     </ul>
                     <input class="btn btn-primary btn-lg btn-block" type="button" onclick="deliveryRenderer.create()" value="Gem Levering"></input>
@@ -132,11 +166,11 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="firstName">Navn</label>
-                            <input type="text" class="form-control" id="inputfirstName" placeholder="" value="" required="">
+                            <input type="text" class="form-control" id="inputFirstName" placeholder="" value="" required="">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label for="lastName">Efternavn</label>
-                            <input type="text" class="form-control" id="inputlastName" placeholder="">
+                            <input type="text" class="form-control" id="inputLastName" placeholder="">
                           </div>
                           <div class="col-md-6 mb-3">
                             <label for="address">Adresse</label>
@@ -145,6 +179,18 @@
                           <div class="col-md-6 mb-3">
                             <label for="zip">Post Nummer</label>
                             <input type="text" class="form-control" id="inputZip" placeholder="">
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="fromWareHouse">Varehus</label>
+                            <select id="inputWarehouse">
+                                <option value="w1">w1</option>
+                                <option value="w2">w2</option>
+                                <option value="w3">w3</option>
+                            </select>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                            <label for="deliveryDate">Leverings dato</label>
+                            <input type="date" id="inputDeliveryDate">
                           </div>
                     </div>
                     
@@ -166,7 +212,8 @@
         </td>
     </template>
 
-<template id="template-product">
+    <!-- Product page -->
+    <template id="template-product">
     <div class="page-content" id="content">
         <h2 class="text-center">Produkter</h2>
 
@@ -244,9 +291,9 @@
         </div>
     </div> <!-- End Modal Create Product Item -->
 
-</template>
+    </template>
 
-<template id="template-table-product">
+    <template id="template-table-product">
     <td class="name"></td>
     <td class="price"></td>
     <td class="weight"></td>
@@ -261,7 +308,7 @@
             <i class="bi bi-trash-fill"></i>
         </button>
     </td>
-</template>
+    </template>
 
 <!-- Footer-->
 <footer class="text-lg-start bg-dark text-muted fixed-bottom">

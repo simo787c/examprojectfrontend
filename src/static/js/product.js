@@ -75,7 +75,7 @@ class ProductRenderer {
 
         await utilFetch.operationData("products", "", data, "POST");
 
-        this.updateUI();
+        this.updateUI("");
 
         $('#modal').modal('hide');
     }
@@ -111,7 +111,7 @@ class ProductRenderer {
 
         await utilFetch.operationData("products/", this.id, data, "PATCH");
 
-        this.updateUI();
+        this.updateUI("");
 
         $('#modal').modal('hide');
     }
